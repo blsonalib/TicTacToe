@@ -29,3 +29,16 @@ function  tocheckWhoPlayFirst()
   fi
 }
 tocheckWhoPlayFirst
+function printBoard()
+{
+   echo "  |---|---|---|"
+   echo "  |" ${boardOfTicTacToeGame[1]}" | "${boardOfTicTacToeGame[2]}" | "${boardOfTicTacToeGame[3]} "| "
+   echo "  |---|---|---|"
+   echo "  | "${boardOfTicTacToeGame[4]}" | "${boardOfTicTacToeGame[5]}" | "${boardOfTicTacToeGame[6]} "| "
+   echo "  |---|---|---|"
+   echo "  |" ${boardOfTicTacToeGame[7]}" | "${boardOfTicTacToeGame[8]}" | "${boardOfTicTacToeGame[9]} "| "
+   echo "  |---|---|---|"
+}
+resetTheBoardOfGame
+tocheckWhoPlayFirst
+printBoard
