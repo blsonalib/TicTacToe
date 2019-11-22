@@ -17,3 +17,15 @@ function resetTheBoardOfGame()
 resetTheBoardOfGame
 echo ${boardOfTicTacToeGame[@]}
 
+
+function  tocheckWhoPlayFirst()
+{
+   optionToToss=$((RANDOM%2))
+   if [ $optionToToss -eq 0 ]
+    then 
+        echo "First play Player"
+    else
+        echo "First play Computer"
+  fi
+}
+tocheckWhoPlayFirst
