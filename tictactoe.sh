@@ -21,13 +21,13 @@ declare -A cellsOfTicTacToeGame
 
 function resetTheBoardOfGame() 
 {
-	
 	for (( cell=1; cell<=$NUMBER_OF_CELLS; cell++ ))
 	do
 		cellsOfTicTacToeGame[$cell]="-"
-                
+
 	done
-}
+       
+}           
 
 function symbolsOfGame()
 {
@@ -46,21 +46,6 @@ function symbolsOfGame()
 	fi
 }
 
-
-function playerTurn()
-{
-        whoIsPlays=true
-	read -p "Enter the position 0-9 : " playerPosition
-	if [[ ${cellsOfTicTacToeGame[$playerPosition]} = '-' ]]
-	then
-		cellsOfTicTacToeGame[$playerPosition]=$player
-	else  
-		playerTurn
-	fi
-	        whoIsPlays=false
-}
-
-
 function playGame()
 {
         while [ $winCount == false ]
@@ -69,7 +54,6 @@ function playGame()
                 if [[ $whoIsPlays == true ]]
                 then
                         playerTurn
-                        echo "player play"
                         checkwinCount $player
                         CheckGameForTie
                 else
@@ -81,8 +65,26 @@ function playGame()
         done
 }
 
+
+function playerTurn()
+{
+        echo "player play"
+        whoIsPlays=true
+	read -p "Enter the position 0-9 : " playerPosition
+	if [[ ${cellsOfTicTacToeGame[$playerPosition]} == '-' ]]
+	then
+		cellsOfTicTacToeGame[$playerPosition]=$player
+               
+	else  
+                echo "Try Again"
+		playerTurn
+	fi
+	        whoIsPlays=false
+}
+
 function computerTurn()
 {
+        echo "Computer play"
         computerMoveWin=false
         ToCheckTheCornerIsEmpty
         checkTheSides 
@@ -103,18 +105,17 @@ function computerTurn()
 function ToCheckWinningMove()
 {
 	counter=1
-	symbol=$1
 	if [ $computerMoveWin = false ]
 	then
 		for (( i=1; i<=$sizeOfTheBoard; i++ ))
 		do
-			if [[ ${cellsOfTicTacToeGame[$counter]} == ${cellsOfTicTacToeGame[$counter+$1+$1]} ]] && [[ ${cellsOfTicTacToeGame[$counter+$1]} == '-' ]] && [[ ${cellsOfTicTacToeGame[$counter]} == $symbol ]]
+			if [[ ${cellsOfTicTacToeGame[$counter]} == ${cellsOfTicTacToeGame[$counter+$1+$1]} ]] && [[ ${cellsOfTicTacToeGame[$counter+$1]} == '-' ]] && [[ ${cellsOfTicTacToeGame[$counter]} == $symbols ]]
 			then
 				positionOfComputer=$(($counter+$1))
 				cellsOfTicTacToeGame[$positionOfComputer]=$computer
 				computerMoveWin=true
 				break
-			     elif [[  ${cellsOfTicTacToeGame[$counter]} == ${cellsOfTicTacToeGame[$counter+$1]} ]] && [[  ${cellsOfTicTacToeGame[$counter+$1+$1]} == '-' ]] && [[ ${cellsOfTicTacToeGame[$counter]} == $symbol ]]
+			     elif [[  ${cellsOfTicTacToeGame[$counter]} == ${cellsOfTicTacToeGame[$counter+$1]} ]] && [[  ${cellsOfTicTacToeGame[$counter+$1+$1]} == '-' ]] && [[ ${cellsOfTicTacToeGame[$counter]} == $symbols ]]
 			     then
 					positionOfComputer=$(($counter+$1+$1))
 					cellsOfTicTacToeGame[$positionOfComputer]=$computer
@@ -136,7 +137,7 @@ function ToCheckTheCornerIsEmpty
 {
 	if [[ $computerMoveWin = false ]]
 	then
-		for ((counter=1; counter<=$NUMBER_OF_CELLS; counter=$(($counter+2)) ))
+		for ((counter=1; counter<=$NUMBER_OF_CELLS; counter=$(($counter+1)) ))
 		do
 			if [[ ${cellsOfTicTacToeGame[$counter]} == '-' ]]
 			then
@@ -176,7 +177,7 @@ function winRowAndColumns()
 		if [[ ${cellsOfTicTacToeGame[$position]} == ${cellsOfTicTacToeGame[$position+$3]} ]] && [[  ${cellsOfTicTacToeGame[$position+$3]}  ==  ${cellsOfTicTacToeGame[$position+$3+$3]} ]] && [[ ${cellsOfTicTacToeGame[$position+$3+$3]} == $1 ]]
 		then
 			printBoard
-			echo "$1 wins "
+			echo "player wins "
 			winCount=true
 			exit
 			break
@@ -219,9 +220,9 @@ function CheckGameForTie()
 		if [[ $nonEmptyBlockCount == $NUMBER_OF_CELLS ]]
 		then
 			printBoard
-			echo "Tie Up"
 			winCount=true
 			computerMoveWin=true
+                        echo "Tie Up"
 			break
 		else
 			nonEmptyBlockCount=$(($nonEmptyBlockCount+1))
@@ -232,13 +233,13 @@ function CheckGameForTie()
 
 function checkwinCount()
 {
-	symbol=$1
+	symbols=$1
 	rowValue=1
 	columnValue=3
 
-	winRowAndColumns $symbol $columnValue  $rowValue
- 	winRowAndColumns $symbol $rowValue $columnValue
-	WinInDiagonal $symbol
+	winRowAndColumns $symbols $columnValue  $rowValue
+ 	winRowAndColumns $symbols $rowValue $columnValue
+	WinInDiagonal $symbols
 }
 
 function checkTheSides()
