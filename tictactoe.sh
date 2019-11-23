@@ -104,6 +104,7 @@ function computerTurn()
 
 function ToCheckWinningMove()
 {
+        local sizeOfTheBoard=3
 	counter=1
 	if [ $computerMoveWin = false ]
 	then
@@ -137,7 +138,7 @@ function ToCheckTheCornerIsEmpty
 {
 	if [[ $computerMoveWin = false ]]
 	then
-		for ((counter=1; counter<=$NUMBER_OF_CELLS; counter=$(($counter+1)) ))
+		for ((counter=1; counter<=$NUMBER_OF_CELLS; counter=$(($counter+2)) ))
 		do
 			if [[ ${cellsOfTicTacToeGame[$counter]} == '-' ]]
 			then
@@ -148,7 +149,7 @@ function ToCheckTheCornerIsEmpty
 			fi
 			if [[ $counter == $sizeOfTheBoard ]]
 			then
-				counter=$(($counter+2))
+				counter=$(($counter+4))
 				fi
 		done
 	fi
@@ -174,17 +175,17 @@ function winRowAndColumns()
 	count1=1
 	while [  $count1 -le $sizeOfTheBoard ]
 	do
-		if [[ ${cellsOfTicTacToeGame[$position]} == ${cellsOfTicTacToeGame[$position+$3]} ]] && [[  ${cellsOfTicTacToeGame[$position+$3]}  ==  ${cellsOfTicTacToeGame[$position+$3+$3]} ]] && [[ ${cellsOfTicTacToeGame[$position+$3+$3]} == $1 ]]
+		if [[ ${cellsOfTicTacToeGame[$position]} == ${cellsOfTicTacToeGame[$position+1]} ]] && [[  ${cellsOfTicTacToeGame[$position+1]}  ==  ${cellsOfTicTacToeGame[$position+2]} ]] && [[ ${cellsOfTicTacToeGame[$position+2]} == $1 ]]
 		then
 			printBoard
-			echo "player wins "
 			winCount=true
+                        echo "$1 win"
 			exit
 			break
 		else
 			position=$(( $position+$2 ))
 		fi
-		count1=$(($count1+1))
+		        count1=$(($count1+1))
 	done
 }
 
@@ -199,6 +200,7 @@ function WinInDiagonal()
 		if [[ ${cellsOfTicTacToeGame[$position]} == ${cellsOfTicTacToeGame[$position+4]} ]] && [[  ${cellsOfTicTacToeGame[$position+4]}  ==  ${cellsOfTicTacToeGame[$position+8]} ]] && [[ ${cellsOfTicTacToeGame[$position+8]} == $1 ]]
 		then
 			printBoard
+                        echo"$1 win"
 			winCount=true
 			break
 		elif [[ ${cellsOfTicTacToeGame[$position+2]} == ${cellsOfTicTacToeGame[$position+4]} ]] && [[  ${cellsOfTicTacToeGame[$position+4]}  ==  ${cellsOfTicTacToeGame[$position+6]} ]] && [[ ${cellsOfTicTacToeGame[$position+6]} == $1 ]]
@@ -240,6 +242,7 @@ function checkwinCount()
 	winRowAndColumns $symbols $columnValue  $rowValue
  	winRowAndColumns $symbols $rowValue $columnValue
 	WinInDiagonal $symbols
+       echo "$1 win"
 }
 
 function checkTheSides()
