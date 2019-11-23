@@ -1,29 +1,30 @@
-#!/bin/bash -x
+#!/bin/bash
+
 echo "**********Welcome to TicTacToe Game**********"
-# Constants
-MAXIMUM_BOARD_POSITION =9
+# Constant
+
+MAXIMUM_POSION_OF_BOARD=9
 NUMBER_OF_CELLS=9
 
-#variables
 playerPosition=0
 computerPosition=0
 player=''
 computer=''
-emptyBlockNotCount=1
+EmptyBlockNotCount=1
 
-winCounter=false
+winningCounter=false
 whoPlays=false
 computerWinMove=false
-computerblockedMove=false
+computerMoveBlocked=false
 
-declare -A cellsOfTicTacToeGame
+declare -A cellsOfTicTicTacToeGame
 
 
 function resetTheBoardOfGame() {
         local count1=1;
 	for (( cell=1; cell<=$NUMBER_OF_CELLS; cell++ ))
 	do
-		cellsOfTicTacToeGame[$cell]='-'
+		cellsOfTicTicTacToeGame[$cell]='-'
                 
 	done
 }
@@ -31,9 +32,9 @@ function resetTheBoardOfGame() {
 
 function symbolsOfGame()
 {
-	result=$((RANDOM%2))
+	symbols=$((RANDOM%2))
 
-	if [ $result -eq 1 ]
+	if [ $symbols -eq 1 ]
 	then
 		whoPlays=true
 		player='X'
@@ -52,12 +53,12 @@ function symbolsOfGame()
 
 function playerTurn()
 {
-	read -p "Enter  position put the player : " playerPosition
-	if [ ${cellsOfTicTacToeGame[$playerPosition]} == '-' ]
+	read -p "Enter  position number put player at Empty Position " playerPosition
+	if [[ ${cellsOfTicTicTacToeGame[$playerPosition]} == '-' ]]
 	then
-		cellsOfTicTacToeGame[$playerPosition]=$player
+		cellsOfTicTicTacToeGame[$playerPosition]=$player
 	else
-
+		echo ":Position Occupied Please enter new Position"
 		playerTurn
 	fi
 	whoPlays=false
@@ -80,19 +81,19 @@ function winBlockPlayMove()
 function computerTurn()
 {
 	computerWinMove=false
-	echo "Computer is playing"
 	winBlockPlayMove $computer
 	winBlockPlayMove $player
 	checkInCorners
+        checkForMiddles 
 	if [ $computerWinMove = false ]
 	then
 
 		computerPosition=$((RANDOM%9+1))
-		if [[ ${cellsOfTicTacToeGame[$computerPosition]} != '-' ]]
+		if [[ ${cellsOfTicTicTacToeGame[$computerPosition]} != '-' ]]
 		then
 			computerTurn
 		else
-			cellsOfTicTacToeGame[$computerPosition]=$computer
+			cellsOfTicTicTacToeGame[$computerPosition]=$computer
 		fi
 	fi
 	whoPlays=true
@@ -106,22 +107,22 @@ function checkWinningMove()
 	then
 		for (( i=1; i<=3; i++ ))
 		do
-			if [[ ${cellsOfTicTacToeGame[$counter]} == ${cellsOfTicTacToeGame[$counter+$1+$1]} ]] && [[ ${cellsOfTicTacToeGame[$counter+$1]} == '-' ]] && [[ ${cellsOfTicTacToeGame[$counter]} == $symbol ]]
+			if [[ ${cellsOfTicTicTacToeGame[$counter]} == ${cellsOfTicTicTacToeGame[$counter+$1+$1]} ]] && [[ ${cellsOfTicTicTacToeGame[$counter+$1]} == '-' ]] && [[ ${cellsOfTicTicTacToeGame[$counter]} == $symbol ]]
 			then
 				computerPosition=$(($counter+$1))
-				cellsOfTicTacToeGame[$computerPosition]=$computer
+				cellsOfTicTicTacToeGame[$computerPosition]=$computer
 				computerWinMove=true
 				break
-			elif [[  ${cellsOfTicTacToeGame[$counter]} == ${cellsOfTicTacToeGame[$counter+$1]} ]] && [[  ${cellsOfTicTacToeGame[$counter+$1+$1]} == '-' ]] && [[ ${cellsOfTicTacToeGame[$counter]} == $symbol ]]
+			elif [[  ${cellsOfTicTicTacToeGame[$counter]} == ${cellsOfTicTicTacToeGame[$counter+$1]} ]] && [[  ${cellsOfTicTicTacToeGame[$counter+$1+$1]} == '-' ]] && [[ ${cellsOfTicTicTacToeGame[$counter]} == $symbol ]]
 			then
 				computerPosition=$(($counter+$1+$1))
-				cellsOfTicTacToeGame[$computerPosition]=$computer
+				cellsOfTicTicTacToeGame[$computerPosition]=$computer
 				computerWinMove=true
 				break
-			elif [[ ${cellsOfTicTacToeGame[$counter+$1]} == ${cellsOfTicTacToeGame[$counter+$1+$1]} ]] && [[ ${cellsOfTicTacToeGame[$counter]} == '-' ]] && [[ ${cellsOfTicTacToeGame[$counter+$1]} == $symbol ]]
+			elif [[ ${cellsOfTicTicTacToeGame[$counter+$1]} == ${cellsOfTicTicTacToeGame[$counter+$1+$1]} ]] && [[ ${cellsOfTicTicTacToeGame[$counter]} == '-' ]] && [[ ${cellsOfTicTicTacToeGame[$counter+$1]} == $symbol ]]
 			then
 				computerPosition=$counter
-				cellsOfTicTacToeGame[$computerPosition]=$computer
+				cellsOfTicTicTacToeGame[$computerPosition]=$computer
 				computerWinMove=true
 				break
 			fi
@@ -133,12 +134,12 @@ function checkInCorners
 {
 	 if [ $computerWinMove = false ]
    then
-		for((i=1; i<=MAXIMUM_BOARD_POSITION; i=$(($i+2)) ))
+		for((i=1; i<=MAXIMUM_POSION_OF_BOARD; i=$(($i+2)) ))
 		do
-				if [ ${cellsOfTicTacToeGame[$i]} == '-' ]
+				if [ ${cellsOfTicTicTacToeGame[$i]} == '-' ]
 				then
 					computerPosition=$i
-            	cellsOfTicTacToeGame[$computerPosition]=$computer
+            	cellsOfTicTicTacToeGame[$computerPosition]=$computer
             	computerWinMove=true
             break
 				fi
@@ -154,12 +155,12 @@ function checkInCorners
 {
 	 if [ $computerWinMove = false ]
    then
-		for((i=1; i<=MAXIMUM_BOARD_POSITION; i=$(($i+2)) ))
+		for((i=1; i<=MAXIMUM_POSION_OF_BOARD; i=$(($i+2)) ))
 		do
-				if [ ${cellsOfTicTacToeGame[$i]} == '-' ]
+				if [ ${cellsOfTicTicTacToeGame[$i]} == '-' ]
 				then
 					computerPosition=$i
-            	cellsOfTicTacToeGame[$computerPosition]=$computer
+            	cellsOfTicTicTacToeGame[$computerPosition]=$computer
             	computerWinMove=true
             break
 				fi
@@ -176,20 +177,20 @@ function checkInCorners
 function winInRowsAndColumns()
 {
 	position=1
-	temp=1
-	while [  $temp -le 3 ]
+	temporary=1
+	while [  $temporary -le 3 ]
 	do
-		if [[ ${cellsOfTicTacToeGame[$position]} == ${cellsOfTicTacToeGame[$position+$3]} ]] && [[  ${cellsOfTicTacToeGame[$position+$3]}  ==  ${cellsOfTicTacToeGame[$position+$3+$3]} ]] && [[ ${cellsOfTicTacToeGame[$position+$3+$3]} == $1 ]]
+		if [[ ${cellsOfTicTicTacToeGame[$position]} == ${cellsOfTicTicTacToeGame[$position+$3]} ]] && [[  ${cellsOfTicTicTacToeGame[$position+$3]}  ==  ${cellsOfTicTicTacToeGame[$position+$3+$3]} ]] && [[ ${cellsOfTicTicTacToeGame[$position+$3+$3]} == $1 ]]
 		then
 			printBoard
 			echo "$1 wins "
-			winCounter=true
+			winningCounter=true
 			exit
 			break
 		else
 			position=$(( $position+$2 ))
 		fi
-		temp=$(($temp+1))
+		temporary=$(($temporary+1))
 	done
 }
 
@@ -199,47 +200,47 @@ function winInRowsAndColumns()
 function winInDiagonals()
 {
 	position=1
-	temp=1
-	while [ $temp -le 2 ]
+	temporary=1
+	while [ $temporary -le 2 ]
 	do
-		if [[ ${cellsOfTicTacToeGame[$position]} == ${cellsOfTicTacToeGame[$position+4]} ]] && [[  ${cellsOfTicTacToeGame[$position+4]}  ==  ${cellsOfTicTacToeGame[$position+8]} ]] && [[ ${cellsOfTicTacToeGame[$position+8]} == $1 ]]
+		if [[ ${cellsOfTicTicTacToeGame[$position]} == ${cellsOfTicTicTacToeGame[$position+4]} ]] && [[  ${cellsOfTicTicTacToeGame[$position+4]}  ==  ${cellsOfTicTicTacToeGame[$position+8]} ]] && [[ ${cellsOfTicTicTacToeGame[$position+8]} == $1 ]]
 		then
 			printBoard
 			echo "$1 wins "
-			winCounter=true
+			winningCounter=true
 			break
-		elif [[ ${cellsOfTicTacToeGame[$position+2]} == ${cellsOfTicTacToeGame[$position+4]} ]] && [[  ${cellsOfTicTacToeGame[$position+4]}  ==  ${cellsOfTicTacToeGame[$position+6]} ]] && [[ ${cellsOfTicTacToeGame[$position+6]} == $1 ]]
+		elif [[ ${cellsOfTicTicTacToeGame[$position+2]} == ${cellsOfTicTicTacToeGame[$position+4]} ]] && [[  ${cellsOfTicTicTacToeGame[$position+4]}  ==  ${cellsOfTicTicTacToeGame[$position+6]} ]] && [[ ${cellsOfTicTicTacToeGame[$position+6]} == $1 ]]
 		then
 			printBoard
 			echo "$1 wins "
-			winCounter=true
+			winningCounter=true
 			break
 		fi
-		temp=$(($temp+1))
+		temporary=$(($temporary+1))
 	done
 }
 
 
 function checkGameTie()
 {
-	while [ ${cellsOfTicTacToeGame[$emptyBlockNotCount]} != '-' ]
+	while [ ${cellsOfTicTicTacToeGame[$EmptyBlockNotCount]} != '-' ]
 	do
-		if [[ $emptyBlockNotCount = $MAXIMUM_BOARD_POSITION ]]
+		if [ $EmptyBlockNotCount -eq $MAXIMUM_POSION_OF_BOARD ]
 		then
 			printBoard
-			echo "Tie Up"
-			winCounter=true
+			echo "Game Is Tie"
+			winningCounter=true
 			computerWinMove=true
 			break
 		else
-			emptyBlockNotCount=$(($emptyBlockNotCount+1))
+			EmptyBlockNotCount=$(($EmptyBlockNotCount+1))
 		fi
 	done
 }
 
 
 
-function checkwinCounter()
+function checkwinningCounter()
 {
 	symbol=$1
 	rowValue=1
@@ -252,30 +253,46 @@ function checkwinCounter()
 
 function playGame()
 {
- while [ $winCounter == false ]
+ while [ $winningCounter == false ]
  do
 	printBoard
 	if [ $whoPlays == true ]
 	then
 		playerTurn
-		checkwinCounter $player
+		checkwinningCounter $player
 		checkGameTie
 	else
 		computerTurn
-		checkwinCounter $computer
+		checkwinningCounter $computer
 		checkGameTie
 	fi
 
  done
 }
+function checkForMiddles()
+{
+	if [ $computerWinMove = false ]
+   then
+            if [ ${cellsOfTicTicTacToeGame[$counter]} == '-' ]
+            then
+               computerPosition=$(($counter+4))
+               cellsOfTicTicTacToeGame[$computerPosition]=$computer
+               computerWinMove=true
+            break
+            fi
+      
+   fi
+
+}
+
 function printBoard()
 {
    echo "    |---|---|---|"
-   echo "    | "${cellsOfTicTacToeGame[1]}" | "${cellsOfTicTacToeGame[2]}" | "${cellsOfTicTacToeGame[3]}" |"
+   echo "    | "${cellsOfTicTicTacToeGame[1]}" | "${cellsOfTicTicTacToeGame[2]}" | "${cellsOfTicTicTacToeGame[3]}" |"
    echo "    |---|---|---|"
-   echo "    | "${cellsOfTicTacToeGame[4]}" | "${cellsOfTicTacToeGame[5]}" | "${cellsOfTicTacToeGame[6]}" |"
+   echo "    | "${cellsOfTicTicTacToeGame[4]}" | "${cellsOfTicTicTacToeGame[5]}" | "${cellsOfTicTicTacToeGame[6]}" |"
    echo "    |---|---|---|"
-   echo "    | "${cellsOfTicTacToeGame[7]}" | "${cellsOfTicTacToeGame[8]}" | "${cellsOfTicTacToeGame[9]}" |"
+   echo "    | "${cellsOfTicTicTacToeGame[7]}" | "${cellsOfTicTicTacToeGame[8]}" | "${cellsOfTicTicTacToeGame[9]}" |"
    echo "    |---|---|---|"
 
 }
@@ -283,3 +300,4 @@ function printBoard()
 resetTheBoardOfGame
 symbolsOfGame
 playGame
+
