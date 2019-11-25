@@ -26,7 +26,7 @@ declare -A boardOfTicTacToeGame
 
 function resetTheBoardOfGame() 
 {       
-        count1=1
+        
 	for (( cell=1; cell<=$NUMBER_OF_POSITION; cell++ ))
 	do
 		boardOfTicTacToeGame[$cell]='-'
@@ -282,13 +282,13 @@ function toCheckSides()
 function printBoard()
 {
       	
-       echo "    |------------------------------|------------------------------|------------------------------|"
+       echo "    |---|---|---|"
        echo "    | "${cellsOfTicTacToeGame[1]}" | "${cellsOfTicTacToeGame[2]}" | "${cellsOfTicTacToeGame[3]}" |"
-       echo "    |------------------------------|------------------------------|------------------------------|"
+       echo "    |---|---|---|"
        echo "    | "${cellsOfTicTacToeGame[4]}" | "${cellsOfTicTacToeGame[5]}" | "${cellsOfTicTacToeGame[6]}" |"
-       echo "    |------------------------------|------------------------------|------------------------------|"
+       echo "    |---|---|---|"
        echo "    | "${cellsOfTicTacToeGame[7]}" | "${cellsOfTicTacToeGame[8]}" | "${cellsOfTicTacToeGame[9]}" |"
-       echo "    |------------------------------|------------------------------|------------------------------|"
+       echo "    |---|---|---|"
 }
 resetTheBoardOfGame
 symbolsToDisplay
